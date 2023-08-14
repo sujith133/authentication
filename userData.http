@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   "username": "sujithcharles",
-  "password": "1234567890"
+  "password": "Sujith@007"
 }
 
 ###
@@ -23,8 +23,8 @@ POST http://localhost:3000/change-password
 Content-Type: application/json
 
 {
-  "username": "sujith",
-  "oldPassword": "richard_567",
-  "newPassword":"Sujith@007"
+  "username": "sujithcharles",
+  "oldPassword": "Sujith@007",
+  "newPassword":"Sujith@001"
 }
 

@@ -35,7 +35,7 @@ app.post("/register", async (request, response) => {
   console.log(usersList === undefined);
   if (usersList === undefined) {
     if (password.length < 5) {
-      response.status = 400;
+      response.status(400);
       response.send("Password is too short");
     } else {
       let createUser = `
@@ -47,7 +47,7 @@ app.post("/register", async (request, response) => {
       response.send("User created successfully");
     }
   } else {
-    response.status = 400;
+    response.status(400);
     response.send("User already exists");
   }
 });
@@ -63,18 +63,18 @@ app.post("/login", async (request, response) => {
     let passwordChecker = await db.get(passwordCheck);
     let compared = await bcrypt.compare(password, usersList.password);
     if (compared === false) {
-      response.status = 400;
+      response.status(400);
       response.send("Invalid password");
     } else {
       response.send("Login success!");
     }
   } else {
-    response.status = 400;
+    response.status(400);
     response.send("Invalid user");
   }
 });
 
-app.post("/change-password", async (request, response) => {
+app.put("/change-password", async (request, response) => {
   let requestBody = request.body;
   let { username, oldPassword, newPassword } = requestBody;
   let userCheck = `select * from user where username = '${username}';`;
@@ -83,16 +83,17 @@ app.post("/change-password", async (request, response) => {
   console.log(await bcrypt.compare(oldPassword, usersList.password));
   if (await bcrypt.compare(oldPassword, usersList.password)) {
     if (newPassword.length < 5) {
-      response.status = 400;
+      response.status(400);
       response.send("Password is too short");
     } else {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       let updateQuery = `update user set password='${hashedPassword}' where username='${username}';`;
       let updated = await db.run(updateQuery);
+      response.status(200);
       response.send("Password updated");
     }
   } else {
-    response.status = 400;
+    response.status(400);
     response.send("Invalid current password");
   }
 });
